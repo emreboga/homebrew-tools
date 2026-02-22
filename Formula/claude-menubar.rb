@@ -2,7 +2,7 @@ class ClaudeMenubar < Formula
   desc "SwiftBar plugin that shows Claude Code session status in the macOS menubar"
   homepage "https://github.com/emreboga/claude-menubar"
   url "https://github.com/emreboga/claude-menubar/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "975b75a69622f3453153c5792201e93b48926a67008caccc6bf31ef85cb80f40"
+  sha256 "eca1bf14c9a84481d0cbc37a5ed8bda19de9b5ed16a355f89abe305b70dd4c4c"
   license "MIT"
   version "1.0.0"
 
@@ -12,14 +12,14 @@ class ClaudeMenubar < Formula
 
   def install
     # Install source to pkgshare for reference and future upgrades
-    pkgshare.install "scripts", "lib", "config", "install.sh", "uninstall.sh"
-    chmod 0755, pkgshare/"install.sh"
+    pkgshare.install "scripts", "lib", "config", "setup.sh", "uninstall.sh"
+    chmod 0755, pkgshare/"setup.sh"
     chmod 0755, pkgshare/"uninstall.sh"
 
     # Create wrapper scripts in bin
     (bin/"claude-menubar-setup").write <<~EOS
       #!/bin/bash
-      exec "#{pkgshare}/install.sh" "$@"
+      exec "#{pkgshare}/setup.sh" "$@"
     EOS
 
     (bin/"claude-menubar-uninstall").write <<~EOS
@@ -29,9 +29,11 @@ class ClaudeMenubar < Formula
 
     chmod 0755, bin/"claude-menubar-setup"
     chmod 0755, bin/"claude-menubar-uninstall"
+  end
 
-    # Auto-install to ~/.claude-menubar with default terminal
-    system "bash", pkgshare/"install.sh"
+  def post_install
+    # Run setup.sh to configure ~/.claude-menubar
+    system "bash", pkgshare/"setup.sh"
 
     # Create SwiftBar plugins directory and symlink the plugin
     swiftbar_plugins = Pathname.new(Dir.home)/"Library/Application Support/SwiftBar/Plugins"
@@ -67,7 +69,7 @@ class ClaudeMenubar < Formula
   end
 
   test do
-    assert_predicate pkgshare/"install.sh", :exist?
+    assert_predicate pkgshare/"setup.sh", :exist?
     assert_predicate pkgshare/"scripts/cc-status", :exist?
     assert_predicate pkgshare/"scripts/claude-menubar.10s.sh", :exist?
     assert_predicate pkgshare/"scripts/clear-all", :exist?

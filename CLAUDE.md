@@ -21,7 +21,7 @@ homebrew-tools/
 1. Downloads source tarball from `emreboga/claude-menubar` GitHub releases
 2. Installs source files to Homebrew's pkgshare directory
 3. Creates wrapper scripts (`claude-menubar-setup`, `claude-menubar-uninstall`) in bin
-4. Auto-runs `install.sh` to set up `~/.claude-menubar`
+4. Auto-runs `setup.sh` to set up `~/.claude-menubar`
 5. Creates SwiftBar plugins directory and symlinks the plugin
 
 ### Key Formula Sections
@@ -35,7 +35,7 @@ depends_on :macos  # macOS only (uses AppleScript)
 def install
   # Install source to pkgshare
   # Create wrapper scripts
-  # Auto-run install.sh
+  # Auto-run setup.sh
   # Create SwiftBar symlink
 end
 ```
