@@ -8,7 +8,7 @@ class ClaudeMenubar < Formula
 
   head "https://github.com/emreboga/claude-menubar.git", branch: "main"
 
-  depends_on cask: "swiftbar"
+  depends_on :macos
 
   def install
     # Install source to pkgshare for reference and future upgrades
@@ -38,7 +38,10 @@ class ClaudeMenubar < Formula
     <<~EOS
       Claude Menubar has been installed to ~/.claude-menubar
 
-      To complete setup, symlink the SwiftBar plugin:
+      Requires SwiftBar. Install it if you haven't:
+        brew install --cask swiftbar
+
+      Then symlink the plugin:
         ln -s ~/.claude-menubar/bin/claude-menubar.10s.sh \\
               ~/Library/Application\\ Support/SwiftBar/Plugins/
 
