@@ -2,7 +2,7 @@ class ClaudeMenubar < Formula
   desc "SwiftBar plugin that shows Claude Code session status in the macOS menubar"
   homepage "https://github.com/emreboga/claude-menubar"
   url "https://github.com/emreboga/claude-menubar/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "eca1bf14c9a84481d0cbc37a5ed8bda19de9b5ed16a355f89abe305b70dd4c4c"
+  sha256 "bd50bde8136a0748aaaf597d3deb9a320110db83fd1d6ed8d240a63d6c4e84c1"
   license "MIT"
   version "1.0.0"
 
@@ -31,40 +31,25 @@ class ClaudeMenubar < Formula
     chmod 0755, bin/"claude-menubar-uninstall"
   end
 
-  def post_install
-    # Run setup.sh to configure ~/.claude-menubar
-    system "bash", pkgshare/"setup.sh"
-
-    # Create SwiftBar plugins directory and symlink the plugin
-    swiftbar_plugins = Pathname.new(Dir.home)/"Library/Application Support/SwiftBar/Plugins"
-    swiftbar_plugins.mkpath
-    plugin_link = swiftbar_plugins/"claude-menubar.10s.sh"
-    plugin_target = Pathname.new(Dir.home)/".claude-menubar/bin/claude-menubar.10s.sh"
-    plugin_link.make_symlink(plugin_target) unless plugin_link.exist?
-  end
-
   def caveats
     <<~EOS
-      Claude Menubar has been installed to ~/.claude-menubar
-      Plugin symlinked to ~/Library/Application Support/SwiftBar/Plugins/
+      To complete installation, run:
+        claude-menubar-setup
 
-      Requires SwiftBar. Install it if you haven't:
-        brew install --cask swiftbar
+      This sets up ~/.claude-menubar and configures Claude Code hooks.
 
-      Then restart Claude Code to load the hooks.
-
-      Optional: Change your terminal (default is Terminal):
+      Optionally specify your terminal (default is auto-detected):
         claude-menubar-setup --terminal Warp
 
       Supported terminals: Terminal, iTerm, iTerm2, Warp,
                            Alacritty, kitty, Hyper, WezTerm, Ghostty
 
-      To uninstall completely:
-        brew uninstall claude-menubar
-        claude-menubar-uninstall
+      Requires SwiftBar:
+        brew install --cask swiftbar
 
-      For more information, visit:
-        https://github.com/emreboga/claude-menubar
+      To uninstall:
+        claude-menubar-uninstall
+        brew uninstall claude-menubar
     EOS
   end
 
