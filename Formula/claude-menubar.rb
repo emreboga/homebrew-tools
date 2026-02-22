@@ -11,33 +11,48 @@ class ClaudeMenubar < Formula
   depends_on cask: "swiftbar"
 
   def install
-    # Install executable scripts to bin/
-    bin.install "scripts/cc-status"
-    bin.install "scripts/clear-all"
-    bin.install "scripts/focus-terminal"
+    # Install source to pkgshare for reference and future upgrades
+    pkgshare.install "scripts", "lib", "config", "install.sh", "uninstall.sh"
+    chmod 0755, pkgshare/"install.sh"
+    chmod 0755, pkgshare/"uninstall.sh"
 
-    # Install shared library to libexec/
-    libexec.install "lib/common.sh"
+    # Create wrapper scripts in bin
+    (bin/"claude-menubar-setup").write <<~EOS
+      #!/bin/bash
+      exec "#{pkgshare}/install.sh" "$@"
+    EOS
 
-    # Install config to pkgshare/ for reference
-    pkgshare.install "config/claude-hooks.json"
+    (bin/"claude-menubar-uninstall").write <<~EOS
+      #!/bin/bash
+      exec "#{pkgshare}/uninstall.sh" "$@"
+    EOS
+
+    chmod 0755, bin/"claude-menubar-setup"
+    chmod 0755, bin/"claude-menubar-uninstall"
+
+    # Auto-install to ~/.claude-menubar with default terminal
+    system "bash", pkgshare/"install.sh"
   end
 
   def caveats
     <<~EOS
-      Claude Menubar has been installed.
+      Claude Menubar has been installed to ~/.claude-menubar
 
-      To finish setup, run the post-install script:
-        #{HOMEBREW_PREFIX}/bin/cc-status --setup
+      To complete setup, symlink the SwiftBar plugin:
+        ln -s ~/.claude-menubar/bin/claude-menubar.10s.sh \\
+              ~/Library/Application\\ Support/SwiftBar/Plugins/
 
-      Or manually copy the hooks config to your project:
-        cp #{pkgshare}/claude-hooks.json <your-project>/.claude/hooks.json
+      Then restart Claude Code to load the hooks.
 
-      Then open SwiftBar and point it at:
-        #{bin}/cc-status
+      Optional: Change your terminal (default is Terminal):
+        claude-menubar-setup --terminal Warp
 
-      To start on login, configure SwiftBar's plugin directory to include:
-        #{bin}
+      Supported terminals: Terminal, iTerm, iTerm2, Warp,
+                           Alacritty, kitty, Hyper, WezTerm, Ghostty
+
+      To uninstall completely:
+        brew uninstall claude-menubar
+        claude-menubar-uninstall
 
       For more information, visit:
         https://github.com/emreboga/claude-menubar
@@ -45,9 +60,14 @@ class ClaudeMenubar < Formula
   end
 
   test do
-    assert_predicate bin/"cc-status", :exist?
-    assert_predicate bin/"clear-all", :exist?
-    assert_predicate bin/"focus-terminal", :exist?
-    assert_predicate libexec/"common.sh", :exist?
+    assert_predicate pkgshare/"install.sh", :exist?
+    assert_predicate pkgshare/"scripts/cc-status", :exist?
+    assert_predicate pkgshare/"scripts/claude-menubar.10s.sh", :exist?
+    assert_predicate pkgshare/"scripts/clear-all", :exist?
+    assert_predicate pkgshare/"scripts/focus-terminal", :exist?
+    assert_predicate pkgshare/"lib/common.sh", :exist?
+    assert_predicate pkgshare/"config/claude-hooks.json", :exist?
+    assert_predicate bin/"claude-menubar-setup", :exist?
+    assert_predicate bin/"claude-menubar-uninstall", :exist?
   end
 end
