@@ -32,18 +32,22 @@ class ClaudeMenubar < Formula
 
     # Auto-install to ~/.claude-menubar with default terminal
     system "bash", pkgshare/"install.sh"
+
+    # Create SwiftBar plugins directory and symlink the plugin
+    swiftbar_plugins = Pathname.new(Dir.home)/"Library/Application Support/SwiftBar/Plugins"
+    swiftbar_plugins.mkpath
+    plugin_link = swiftbar_plugins/"claude-menubar.10s.sh"
+    plugin_target = Pathname.new(Dir.home)/".claude-menubar/bin/claude-menubar.10s.sh"
+    plugin_link.make_symlink(plugin_target) unless plugin_link.exist?
   end
 
   def caveats
     <<~EOS
       Claude Menubar has been installed to ~/.claude-menubar
+      Plugin symlinked to ~/Library/Application Support/SwiftBar/Plugins/
 
       Requires SwiftBar. Install it if you haven't:
         brew install --cask swiftbar
-
-      Then symlink the plugin:
-        ln -s ~/.claude-menubar/bin/claude-menubar.10s.sh \\
-              ~/Library/Application\\ Support/SwiftBar/Plugins/
 
       Then restart Claude Code to load the hooks.
 
