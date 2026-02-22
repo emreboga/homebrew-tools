@@ -1,12 +1,12 @@
 class ClaudeMenubar < Formula
   desc "SwiftBar plugin that shows Claude Code session status in the macOS menubar"
-  homepage "https://github.com/emre/claude-menubar"
-  url "https://github.com/emre/claude-menubar/archive/refs/tags/v1.0.0.tar.gz"
+  homepage "https://github.com/emreboga/claude-menubar"
+  url "https://github.com/emreboga/claude-menubar/archive/refs/tags/v1.0.0.tar.gz"
   sha256 "REPLACE_WITH_SHA256"
   license "MIT"
   version "1.0.0"
 
-  head "https://github.com/emre/claude-menubar.git", branch: "main"
+  head "https://github.com/emreboga/claude-menubar.git", branch: "main"
 
   depends_on cask: "swiftbar"
 
@@ -40,7 +40,7 @@ class ClaudeMenubar < Formula
         #{bin}
 
       For more information, visit:
-        https://github.com/emre/claude-menubar
+        https://github.com/emreboga/claude-menubar
     EOS
   end
 

@@ -1,6 +1,6 @@
 # homebrew-tools
 
-Homebrew tap for Emre's tools.
+Homebrew tap for tools by emreboga.
 
 ## Installation
 
