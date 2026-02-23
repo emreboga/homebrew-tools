@@ -2,7 +2,7 @@ class ClaudeMenubar < Formula
   desc "SwiftBar plugin that shows Claude Code session status in the macOS menubar"
   homepage "https://github.com/emreboga/claude-menubar"
   url "https://github.com/emreboga/claude-menubar/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "f87b5b61e6f9d14441485b0cc8c836d25a15eeb3a3a715f43a2990be78f76eea"
+  sha256 "f948c60724f1645b12505562894c9227c32408b9b1ccc4e367344631587dbcaa"
   license "MIT"
   version "1.0.0"
 
