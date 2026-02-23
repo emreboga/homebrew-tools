@@ -2,7 +2,7 @@ class ClaudeMenubar < Formula
   desc "SwiftBar plugin that shows Claude Code session status in the macOS menubar"
   homepage "https://github.com/emreboga/claude-menubar"
   url "https://github.com/emreboga/claude-menubar/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "048de1f1fbc55130e3d843be25dc09de241c45aee86d1208ea7b63528462b917"
+  sha256 "480c0aae677d82d74edbf187698569661bf026941bdb52208e23607b6cd8effb"
   license "MIT"
   version "1.0.0"
 
@@ -56,7 +56,7 @@ class ClaudeMenubar < Formula
   test do
     assert_predicate pkgshare/"setup.sh", :exist?
     assert_predicate pkgshare/"scripts/cc-status", :exist?
-    assert_predicate pkgshare/"scripts/claude-menubar.10s.sh", :exist?
+    assert_predicate pkgshare/"scripts/claude-menubar.5s.sh", :exist?
     assert_predicate pkgshare/"scripts/clear-all", :exist?
     assert_predicate pkgshare/"scripts/focus-terminal", :exist?
     assert_predicate pkgshare/"lib/common.sh", :exist?
